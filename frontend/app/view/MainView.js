@@ -1,112 +1,112 @@
 Ext.define('PowerMon.view.MainView', {
-    extend : 'Ext.container.Viewport',
+    extend: 'Ext.container.Viewport',
     required: ['Ext.ux.statusbar.StatusBar'],
-    alias : 'widget.mainview',
-    layout : 'border',
+    alias: 'widget.mainview',
+    layout: 'border',
 
-    items : [ {
-        region : 'north',
-        border : true,
-        margins : '0 0 0 0',
-        xtype : 'toolbar',
+    items: [{
+        region: 'north',
+        border: true,
+        margins: '0 0 0 0',
+        xtype: 'toolbar',
 
-        items : [ {
-            defaults : {
-                scale : 'medium'
+        items: [{
+            defaults: {
+                scale: 'medium'
             },
-            xtype : 'buttongroup',
-            items : [ {
-                text : 'Свитчи',
-                action : 'switchs',
+            xtype: 'buttongroup',
+            items: [{
+                text: 'Свитчи',
+                action: 'switchs',
                 iconCls: 'btn_switch',
-                toggleGroup : 'grp',
-                enableToggle : true,
+                toggleGroup: 'grp',
+                enableToggle: true,
                 pressed: true,
-                handler: function fn(){
+                handler: function fn() {
                     this.up('mainview').down('#maincard').getLayout().setActiveItem(0);
 
                 }
             }, {
-                text : 'Календарь',
-                action : 'calendar',
+                text: 'Календарь',
+                action: 'calendar',
                 iconCls: 'btn_calendar',
-                toggleGroup : 'grp',
-                enableToggle : true,
-                handler: function fn(){
+                toggleGroup: 'grp',
+                enableToggle: true,
+                handler: function fn() {
                     this.up('mainview').down('#maincard').getLayout().setActiveItem(1);
 
                 }
             }, {
-                text : 'Журнал',
-                action : 'log',
-                itemId : 'log',
+                text: 'Журнал',
+                action: 'log',
+                itemId: 'log',
                 iconCls: 'btn_log',
-                toggleGroup : 'grp',
-                enableToggle : true,
-                handler: function fn(){
+                toggleGroup: 'grp',
+                enableToggle: true,
+                handler: function fn() {
                     this.up('mainview').down('#maincard').getLayout().setActiveItem(2);
                 }
-            } ]
+            }]
         }, {
-            defaults : {
-                scale : 'medium'
+            defaults: {
+                scale: 'medium'
             },
-            xtype : 'buttongroup',
-            items : [ {
-                text : 'Выход',
-                action : 'exit',
+            xtype: 'buttongroup',
+            items: [{
+                text: 'Выход',
+                action: 'exit',
                 iconCls: 'btn_logout',
-                handler: function(btn){
+                handler: function (btn) {
                     var mainView = btn.up('mainview');
                     mainView.fireEvent('logout', mainView)
                 }
-            } ]
+            }]
         }
 
             , '->',
 
             {
-                defaults : {
-                    scale : 'medium'
+                defaults: {
+                    scale: 'medium'
                 },
-                xtype : 'buttongroup',
-                items : [ {
-                    text : 'О системе',
-                    action : 'about',
+                xtype: 'buttongroup',
+                items: [{
+                    text: 'О системе',
+                    action: 'about',
                     iconCls: 'btn_about',
-                    handler: function(){
+                    handler: function () {
                         Ext.widget('about').show();
                     }
-                } ]
-            } ]
+                }]
+            }]
     }, {
-        region : 'center',
-        layout : 'card',
-        id : 'maincard',
-        activeItem : 0,
-        border : false,
-        defaults : [ {
-            border : false
-        } ],
-        items : [ {
-            id : 'card-sw',
-            xtype : 'swpanel'
+        region: 'center',
+        layout: 'card',
+        id: 'maincard',
+        activeItem: 0,
+        border: false,
+        defaults: [{
+            border: false
+        }],
+        items: [{
+            id: 'card-sw',
+            xtype: 'swpanel'
         }, {
-            id : 'card-cal',
+            id: 'card-cal',
             xtype: 'calendar'
         }, {
-            id : 'card-log',
+            id: 'card-log',
             xtype: 'log'
-        } ]
-    },{
-        xtype:'statusbar',
+        }]
+    }, {
+        xtype: 'statusbar',
         id: 'statusbar',
-        region : 'south',
+        region: 'south',
         //statusAlign: 'right',
         //text: 'Готов',
-        height:26//,    items:['-',{text:'ololo'}]
+        height: 26//,    items:['-',{text:'ololo'}]
 
 
-    } ]
+    }]
 
 });

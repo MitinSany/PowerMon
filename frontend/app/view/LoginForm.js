@@ -1,4 +1,4 @@
-Ext.define("PowerMon.view.LoginForm", {
+Ext.define('PowerMon.view.LoginForm', {
     extend: 'Ext.window.Window',
     alias: 'widget.loginform',
     requires: ['PowerMon.controller.LoginController', 'Ext.form.Panel'],

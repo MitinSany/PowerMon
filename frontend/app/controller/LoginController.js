@@ -99,7 +99,7 @@ Ext.define('PowerMon.controller.LoginController', {
         localStorage.removeItem('user-token');
     },
 
-    onLogout: function(mainView) {
+    onLogout: function (mainView) {
         var me = this;
         me.clearToken();
         mainView.destroy();

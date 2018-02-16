@@ -1,26 +1,26 @@
 Ext.define("PowerMon.user.Profile", {
-	
-  config: {
-    firstName: '',
-    lastName: '',
-    roles: []
-  },
 
-  isUserInRole: function(roles) {
+    config: {
+        firstName: '',
+        lastName: '',
+        roles: []
+    },
 
-  	for (var i=0; i<roles.length; i++) {
-    	if (Ext.Array.contains(this.getRoles(),roles[i])) {
-    		return true
-    	}
-   	}
+    isUserInRole: function (roles) {
 
-   	return false;
+        for (var i = 0; i < roles.length; i++) {
+            if (Ext.Array.contains(this.getRoles(), roles[i])) {
+                return true
+            }
+        }
 
-  },
+        return false;
 
-  constructor: function(config) {
-    this.initConfig(config);
-    this.callParent(arguments);
-  }
+    },
+
+    constructor: function (config) {
+        this.initConfig(config);
+        this.callParent(arguments);
+    }
 
 });

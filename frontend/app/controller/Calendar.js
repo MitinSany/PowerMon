@@ -1,57 +1,57 @@
 Ext.define('PowerMon.controller.Calendar', {
-    extend : 'Ext.app.Controller',
-    stores : [ 'Calendar' ],
+    extend: 'Ext.app.Controller',
+    stores: ['Calendar'],
 //	views : [ 'Calendar' ],
 
-    init : function(appllication) {
+    init: function (appllication) {
         if (this.inited) {
             return;
         }
         this.inited = true;
 
         this.control({
-            '#CalendarGrid' : {
-                edit : function(self, e, eOpts) {
+            '#CalendarGrid': {
+                edit: function (self, e, eOpts) {
                     if (e['originalValue'] != e['value']) {
                         self.cmp.down('#save').setDisabled(false);
                         self.cmp.down('#cancel_edit').setDisabled(false);
 
                     }
                 },
-                beforeedit: function(plugin, edit) {
+                beforeedit: function (plugin, edit) {
                     return edit.record.get('editable');
                 }
             },
-            '#CalendarGrid #cancel_edit' : {
-                click : function(self) {
+            '#CalendarGrid #cancel_edit': {
+                click: function (self) {
                     Ext.getStore('Calendar').rejectChanges();
                     self.setDisabled(true);
                     self.up().down('#save').setDisabled(true);
                 }
             },
-            '#CalendarGrid #refresh' : {
-                click : function(self) {
+            '#CalendarGrid #refresh': {
+                click: function (self) {
                     Ext.getStore('Calendar').reload();
                 }
             },
-            '#CalendarGrid #save' : {
-                click : function(self) {
+            '#CalendarGrid #save': {
+                click: function (self) {
                     var recs = Ext.getStore('Calendar').getModifiedRecords();
                     var data = [];
-                    for (i in recs){
+                    for (i in recs) {
                         data.push(recs[i]['data']);
                     }
-                    exPmon.save_calendar(data,function(ret) {
+                    exPmon.save_calendar(data, function (ret) {
                         if (ret['status'] == false) {
                             Ext.MessageBox
                                 .show({
-                                    title : 'Ошибка',
-                                    msg : 'Во время сохранения возникла ошибка.<br/>'
+                                    title: 'Ошибка',
+                                    msg: 'Во время сохранения возникла ошибка.<br/>'
                                     + ret['msg'],
-                                    buttons : Ext.MessageBox.OK,
-                                    icon : Ext.MessageBox.WARNING
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.WARNING
                                 });
-                        }else if (ret['status'] == true){
+                        } else if (ret['status'] == true) {
                             Ext.getStore('Calendar').commitChanges();
                             self.setDisabled(true);
                             self.up().down('#cancel_edit').setDisabled(true);
