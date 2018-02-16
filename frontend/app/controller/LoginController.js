@@ -21,7 +21,7 @@ Ext.define('PowerMon.controller.LoginController', {
             url: '/auth/login',
             method: 'POST',
             params: {
-                username: loginCredentials.username,
+                login: loginCredentials.login,
                 password: loginCredentials.password
             },
             success: function (response) {

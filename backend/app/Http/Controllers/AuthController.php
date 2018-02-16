@@ -21,13 +21,13 @@ class AuthController extends Controller
     public function postLogin(Request $request)
     {
         $this->validate($request, [
-            'email'    => 'required|email|max:255',
+            'login'    => 'required|max:255',
             'password' => 'required',
         ]);
 
         try {
 
-            if (! $token = $this->jwt->attempt($request->only('email', 'password'))) {
+            if (! $token = $this->jwt->attempt($request->only('login', 'password'))) {
                 return response()->json(['user_not_found'], 404);
             }
 

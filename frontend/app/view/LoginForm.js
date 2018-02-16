@@ -19,8 +19,8 @@ Ext.define("PowerMon.view.LoginForm", {
             },
             items: [
                 {
-                    fieldLabel: 'User Name:',
-                    name: 'username',
+                    fieldLabel: 'Login:',
+                    name: 'login',
                     allowBlank: false
                 },
                 {
