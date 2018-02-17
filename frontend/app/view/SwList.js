@@ -1,6 +1,7 @@
 Ext.define('PowerMon.view.SwList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.swlist',
+    requires: ['Ext.grid.column.Action'],
     store: ['SwListStore'],
     border: false,
     loadMask: false,

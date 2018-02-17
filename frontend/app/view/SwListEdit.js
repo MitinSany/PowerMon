@@ -1,9 +1,18 @@
 Ext.define('PowerMon.view.SwListEdit', {
     extend: 'Ext.form.Panel',
+    requires: [
+        'Ext.ux.Spotlight',
+        'Ext.tab.Panel',
+        'Ext.form.field.Hidden',
+        'Ext.form.field.Number',
+        'Ext.form.field.Checkbox',
+        'Ext.form.FieldContainer',
+        'Ext.form.field.ComboBox'
+    ],
     alias: 'widget.swlistedit',
     itemId: 'swlistedit',
     title: 'Настройка свитча',
-    spot: Ext.create('Ext.ux.Spotlight'),
+    //spot: Ext.create('Ext.ux.Spotlight'),
     tbar: [
         {
             text: 'Сохранить',
@@ -314,7 +323,7 @@ Ext.define('PowerMon.view.SwListEdit', {
     defaultType: 'textfield',
     initComponent: function () {
         this.callParent(arguments);
-        //spot: Ext.create('Ext.ux.Spotlight')
+        this.spot = Ext.create('Ext.ux.Spotlight');
     },
     toggleEditState: function (enable) {
         this.spot.animate = false;

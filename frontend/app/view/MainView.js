@@ -1,6 +1,11 @@
 Ext.define('PowerMon.view.MainView', {
     extend: 'Ext.container.Viewport',
-    required: ['Ext.ux.statusbar.StatusBar'],
+    requires: [
+        'Ext.ux.statusbar.StatusBar',
+        'Ext.layout.container.Border',
+        'Ext.container.ButtonGroup',
+        'Ext.layout.container.Card'
+    ],
     alias: 'widget.mainview',
     layout: 'border',
 

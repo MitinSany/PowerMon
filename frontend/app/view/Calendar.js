@@ -1,5 +1,6 @@
 Ext.define('PowerMon.view.Calendar', {
     extend: 'Ext.panel.Panel',
+    requires: ['Ext.grid.plugin.CellEditing'],
     alias: 'widget.calendar',
     layout: 'border',
     bodyStyle: 'padding: 2px;',
@@ -19,11 +20,11 @@ Ext.define('PowerMon.view.Calendar', {
         viewConfig: {
             loadMask: false
         },
-        plugins: [
+        /*plugins: [
             Ext.create('Ext.grid.plugin.CellEditing', {
                 clicksToEdit: 1
             })
-        ],
+        ],*/
         tbar: [{
             text: 'Сохранить',
             itemId: 'save',
