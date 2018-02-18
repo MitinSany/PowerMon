@@ -114,7 +114,7 @@ Ext.define('PowerMon.view.SwList', {
             draggable: false,
             menuDisabled: true,
             items: [{
-                icon: 'res/text-x-changelog16.png',
+                icon: 'resources/images/app/text-x-changelog16.png',
                 tooltip: 'Журнал',
                 handler: function (grid, rowIndex, colIndex) {
                     var id = grid.store.getAt(rowIndex).get('id');
