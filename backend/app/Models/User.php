@@ -31,6 +31,11 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
         'password',
     ];
 
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role')->withTimestamps();
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
