@@ -1,7 +1,7 @@
-Ext.define('PowerMon.controller.Log', {
+Ext.define('PowerMon.controller.log.Log', {
     extend: 'Ext.app.Controller',
     stores: ['Logs', 'LogSw'],
-    //	views : [ 'Log' ],
+    views: ['log.Log'],
 
     init: function (appllication) {
         if (this.inited) {

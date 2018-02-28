@@ -1,13 +1,14 @@
-Ext.define('PowerMon.view.LoginForm', {
-    extend: 'Ext.window.Window',
+Ext.define('PowerMon.view.login.Login', {
+    extend : 'Ext.window.Window',
     alias: 'widget.loginform',
-    requires: ['PowerMon.controller.LoginController', 'Ext.form.Panel'],
+    requires: ['Ext.form.Panel'],
     title: 'Please Log In',
     autoShow: true,
     height: 150,
     width: 300,
     closable: false,
     resizable: false,
+    moveable: false,
     layout: 'fit',
     items: [
         {
@@ -26,6 +27,7 @@ Ext.define('PowerMon.view.LoginForm', {
                 {
                     fieldLabel: 'Password:',
                     name: 'password',
+                    inputType: 'password',
                     allowBlank: false
                 }
             ],

@@ -1,4 +1,4 @@
-Ext.define('PowerMon.view.SwPanel', {
+Ext.define('PowerMon.view.switches.View', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.swpanel',
     layout: 'border',

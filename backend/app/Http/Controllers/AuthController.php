@@ -28,23 +28,23 @@ class AuthController extends Controller
         try {
 
             if (! $token = $this->jwt->attempt($request->only('login', 'password'))) {
-                return response()->json(['user_not_found'], 404);
+                return response()->json(['status' => false, 'message' => 'User not found'], 404);
             }
 
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
 
-            return response()->json(['token_expired'], 500);
+            return response()->json(['status' => false, 'message' => 'token expired'], 500);
 
         } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
 
-            return response()->json(['token_invalid'], 500);
+            return response()->json(['status' => false, 'message' => 'token invalid'], 500);
 
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
 
-            return response()->json(['token_absent' => $e->getMessage()], 500);
+            return response()->json(['status' => false, 'message' => 'token absent ' . $e->getMessage()], 500);
 
         }
 
-        return response()->json(compact('token'));
+        return response()->json(['status' => true, 'token' => $token]);
     }
 }

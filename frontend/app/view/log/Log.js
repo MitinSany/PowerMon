@@ -1,4 +1,4 @@
-Ext.define('PowerMon.view.Log', {
+Ext.define('PowerMon.view.log.Log', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.log',
     title: 'Журнал сообщений',

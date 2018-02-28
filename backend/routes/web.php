@@ -16,3 +16,4 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('/auth/login', 'AuthController@postLogin');
+$router->get('/user', 'UserController@getUserData');

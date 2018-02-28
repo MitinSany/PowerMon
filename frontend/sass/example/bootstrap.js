@@ -841,25 +841,26 @@ Ext.ClassManager.addNameAlternateMappings({
   "PowerMon.Application": [],
   "PowerMon.controller.Calendar": [],
   "PowerMon.controller.Log": [],
-  "PowerMon.controller.LoginController": [],
   "PowerMon.controller.Main": [],
   "PowerMon.controller.SwList": [],
+  "PowerMon.controller.login.Login": [],
   "PowerMon.store.Calendar": [],
   "PowerMon.store.Emails": [],
   "PowerMon.store.LogSw": [],
   "PowerMon.store.Logs": [],
   "PowerMon.store.Phones": [],
-  "PowerMon.store.SwListStore": [],
+  "PowerMon.store.Switches": [],
   "PowerMon.user.Profile": [],
+  "PowerMon.user.Token": [],
   "PowerMon.view.About": [],
   "PowerMon.view.Calendar": [],
   "PowerMon.view.Log": [],
-  "PowerMon.view.LoginForm": [],
-  "PowerMon.view.MainToolbar": [],
-  "PowerMon.view.MainView": [],
   "PowerMon.view.SwList": [],
   "PowerMon.view.SwListEdit": [],
-  "PowerMon.view.SwPanel": []
+  "PowerMon.view.SwPanel": [],
+  "PowerMon.view.login.Login": [],
+  "PowerMon.view.main.Toolbar": [],
+  "PowerMon.view.main.View": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "Ext.AbstractComponent": [],
@@ -1860,18 +1861,19 @@ Ext.ClassManager.addNameAliasMappings({
   "PowerMon.Application": [],
   "PowerMon.controller.Calendar": [],
   "PowerMon.controller.Log": [],
-  "PowerMon.controller.LoginController": [
-    "controller.login"
-  ],
   "PowerMon.controller.Main": [],
   "PowerMon.controller.SwList": [],
+  "PowerMon.controller.login.Login": [
+    "controller.login"
+  ],
   "PowerMon.store.Calendar": [],
   "PowerMon.store.Emails": [],
   "PowerMon.store.LogSw": [],
   "PowerMon.store.Logs": [],
   "PowerMon.store.Phones": [],
-  "PowerMon.store.SwListStore": [],
+  "PowerMon.store.Switches": [],
   "PowerMon.user.Profile": [],
+  "PowerMon.user.Token": [],
   "PowerMon.view.About": [
     "widget.about"
   ],
@@ -1881,15 +1883,6 @@ Ext.ClassManager.addNameAliasMappings({
   "PowerMon.view.Log": [
     "widget.log"
   ],
-  "PowerMon.view.LoginForm": [
-    "widget.loginform"
-  ],
-  "PowerMon.view.MainToolbar": [
-    "widget.maintoolbar"
-  ],
-  "PowerMon.view.MainView": [
-    "widget.mainview"
-  ],
   "PowerMon.view.SwList": [
     "widget.swlist"
   ],
@@ -1898,6 +1891,15 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "PowerMon.view.SwPanel": [
     "widget.swpanel"
+  ],
+  "PowerMon.view.login.Login": [
+    "widget.loginform"
+  ],
+  "PowerMon.view.main.Toolbar": [
+    "widget.maintoolbar"
+  ],
+  "PowerMon.view.main.View": [
+    "widget.mainview"
   ]
 });
 Ext.setVersion("ext-theme-base", "4.2.2");

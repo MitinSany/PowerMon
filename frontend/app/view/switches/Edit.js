@@ -1,7 +1,6 @@
-Ext.define('PowerMon.view.SwListEdit', {
+Ext.define('PowerMon.view.switches.Edit', {
     extend: 'Ext.form.Panel',
     requires: [
-        'Ext.ux.Spotlight',
         'Ext.tab.Panel',
         'Ext.form.field.Hidden',
         'Ext.form.field.Number',
@@ -12,26 +11,19 @@ Ext.define('PowerMon.view.SwListEdit', {
     alias: 'widget.swlistedit',
     itemId: 'swlistedit',
     title: 'Настройка свитча',
-    //spot: Ext.create('Ext.ux.Spotlight'),
     tbar: [
         {
             text: 'Сохранить',
-            itemId: 'edit_save',
+            itemId: 'save',
             iconCls: 'save',
             disabled: true
         }, {
             text: 'Отменить',
-            itemId: 'edit_cancel',
+            itemId: 'cancel',
             iconCls: 'cancel',
             disabled: true
         }
     ],
-    defaults: {
-        labelWidth: 100,
-        anchor: '100%',
-        labelAlign: 'right'
-        // readOnly : true
-    },
     items: {
         border: false,
         xtype: 'tabpanel',
@@ -48,7 +40,8 @@ Ext.define('PowerMon.view.SwListEdit', {
                 layout: 'anchor',
                 defaults: {
                     anchor: '100%',
-                    hideEmptyLabel: false
+                    hideEmptyLabel: false,
+                    boxLabel: ''
                 },
                 items: [
                     {
@@ -56,14 +49,14 @@ Ext.define('PowerMon.view.SwListEdit', {
                         name: 'id'
                     }, {
                         fieldLabel: 'Имя тп.',
-                        name: 'tp',
+                        name: 'technical_site_name',
                         allowBlank: true,
                         width: 360,
                         labelWidth: 80,
                         labelAlign: 'right'
                     }, {
                         fieldLabel: 'Имя свитча',
-                        name: 'sw',
+                        name: 'switch_name',
                         width: 360,
                         labelWidth: 80,
                         labelAlign: 'right'
@@ -78,8 +71,8 @@ Ext.define('PowerMon.view.SwListEdit', {
                         labelWidth: 80,
                         labelAlign: 'right'
                     }, {
-                        fieldLabel: 'MRTG',
-                        name: 'mrtg',
+                        fieldLabel: 'LINK',
+                        name: 'link',
                         xtype: 'textfield',
                         width: 360,
                         labelWidth: 80,
@@ -99,13 +92,14 @@ Ext.define('PowerMon.view.SwListEdit', {
                 layout: 'anchor',
                 defaults: {
                     anchor: '100%',
-                    hideEmptyLabel: false
+                    hideEmptyLabel: false,
+                    boxLabel: ''
                 },
                 items: [
                     {
                         xtype: 'checkboxfield',
-                        name: 'active',
-                        fieldLabel: '&nbsp;',
+                        name: 'check_snmp',
+                        fieldLabel: '',
                         labelSeparator: '',
                         boxLabel: 'Опрашивать по SNMP',
                         width: 360,
@@ -113,8 +107,8 @@ Ext.define('PowerMon.view.SwListEdit', {
                         labelAlign: 'right'
                     }, {
                         xtype: 'checkboxfield',
-                        name: 'esend',
-                        fieldLabel: '&nbsp;',
+                        name: 'email_send',
+                        fieldLabel: '',
                         labelSeparator: '',
                         boxLabel: 'Отправлять Email сообщения',
                         width: 360,
@@ -122,8 +116,8 @@ Ext.define('PowerMon.view.SwListEdit', {
                         labelAlign: 'right'
                     }, {
                         xtype: 'checkboxfield',
-                        name: 'ssend',
-                        fieldLabel: '&nbsp;',
+                        name: 'sms_send',
+                        fieldLabel: '',
                         labelSeparator: '',
                         boxLabel: 'Отправлять SMS сообщения',
                         width: 360,
@@ -131,7 +125,7 @@ Ext.define('PowerMon.view.SwListEdit', {
                         labelAlign: 'right'
                     }, {
                         xtype: 'checkboxfield',
-                        name: 'c1',
+                        name: 'sms_night',
                         fieldLabel: '&nbsp;',
                         labelSeparator: '',
                         boxLabel: ' SMS в нерабочее время',
@@ -147,24 +141,25 @@ Ext.define('PowerMon.view.SwListEdit', {
                 layout: 'anchor',
                 defaults: {
                     anchor: '100%',
-                    hideEmptyLabel: false
+                    hideEmptyLabel: false,
+                    boxLabel: ''
                 },
                 items: [
                     {
                         fieldLabel: 'IP',
-                        name: 'ip',
+                        name: 'snmp_ip',
                         width: 360,
                         labelWidth: 80,
                         labelAlign: 'right'
                     }, {
                         fieldLabel: 'Community',
-                        name: 'community',
+                        name: 'snmp_community',
                         width: 360,
                         labelWidth: 80,
                         labelAlign: 'right'
                     }, {
                         fieldLabel: 'OID',
-                        name: 'oid',
+                        name: 'snmp_oid',
                         width: 360,
                         labelWidth: 80,
                         labelAlign: 'right'
@@ -198,24 +193,25 @@ Ext.define('PowerMon.view.SwListEdit', {
                 layout: 'anchor',
                 defaults: {
                     anchor: '100%',
-                    hideEmptyLabel: false
+                    hideEmptyLabel: false,
+                    boxLabel: ''
                 },
                 items: [
                     {
-                        name: 'e1',
+                        name: 'email1',
                         xtype: 'combobox',
                         fieldLabel: 'Адрес 1',
                         displayField: 'email',
-                        valueField: 'email',
+                        valueField: 'id',
                         store: 'Emails',
                         queryMode: 'local',
                         allowBlank: true,
-                        typeAhead: false,
+                        typeAhead: true,
                         labelAlign: 'right',
                         labelWidth: 80
 
                     }, {
-                        name: 'e2',
+                        name: 'email2',
                         xtype: 'combobox',
                         fieldLabel: 'Адрес 2',
                         displayField: 'email',
@@ -228,7 +224,7 @@ Ext.define('PowerMon.view.SwListEdit', {
                         labelWidth: 80
 
                     }, {
-                        name: 'e3',
+                        name: 'email3',
                         xtype: 'combobox',
                         fieldLabel: 'Адрес 3',
                         displayField: 'email',
@@ -241,7 +237,7 @@ Ext.define('PowerMon.view.SwListEdit', {
                         labelWidth: 80
 
                     }, {
-                        name: 'e4',
+                        name: 'email4',
                         xtype: 'combobox',
                         fieldLabel: 'Адрес 4',
                         displayField: 'email',
@@ -261,11 +257,12 @@ Ext.define('PowerMon.view.SwListEdit', {
                 layout: 'anchor',
                 defaults: {
                     anchor: '100%',
-                    hideEmptyLabel: false
+                    hideEmptyLabel: false,
+                    boxLabel: ''
                 },
                 items: [
                     {
-                        name: 'n1',
+                        name: 'phone_number1',
                         xtype: 'combobox',
                         fieldLabel: 'Номер 1',
                         displayField: 'phone',
@@ -277,7 +274,7 @@ Ext.define('PowerMon.view.SwListEdit', {
                         labelAlign: 'right',
                         labelWidth: 80
                     }, {
-                        name: 'n2',
+                        name: 'phone_number2',
                         xtype: 'combobox',
                         fieldLabel: 'Номер 2',
                         displayField: 'phone',
@@ -289,7 +286,7 @@ Ext.define('PowerMon.view.SwListEdit', {
                         labelAlign: 'right',
                         labelWidth: 80
                     }, {
-                        name: 'n3',
+                        name: 'phone_number3',
                         xtype: 'combobox',
                         fieldLabel: 'Номер 3',
                         displayField: 'phone',
@@ -301,7 +298,7 @@ Ext.define('PowerMon.view.SwListEdit', {
                         labelAlign: 'right',
                         labelWidth: 80
                     }, {
-                        name: 'n4',
+                        name: 'phone_number4',
                         xtype: 'combobox',
                         fieldLabel: 'Номер 4',
                         displayField: 'phone',
@@ -316,31 +313,24 @@ Ext.define('PowerMon.view.SwListEdit', {
                 ]
             }
         ]
-    }
+    },
 
-    ,
-
-    defaultType: 'textfield',
     initComponent: function () {
         this.callParent(arguments);
-        this.spot = Ext.create('Ext.ux.Spotlight');
     },
+
     toggleEditState: function (enable) {
-        this.spot.animate = false;
         if (enable === true) {
-            this.spot.show(this.id);
-        } else if (this.spot.active) {
-            this.spot.hide(this.id);
+            this.fireEvent('spotlightshow', this.id);
+        } else {
+            this.fireEvent('spotlighthide', this.id);
         }
 
         var disabled = !enable;
-        this.spot.active = enable;
-
-        this.down('button[itemId=edit_save]').setDisabled(
-            !this.getForm().isValid() || disabled);
-        this.down('button[itemId=edit_cancel]').setDisabled(disabled);
-        this.down('button[itemId=check_snmp]').setDisabled(disabled);
-        this.down('button[itemId=check_snmpwalk]').setDisabled(disabled);
+        this.down('button#save').setDisabled(!this.getForm().isValid() || disabled);
+        this.down('button#cancel').setDisabled(disabled);
+        this.down('button#check_snmp').setDisabled(disabled);
+        this.down('button#check_snmpwalk').setDisabled(disabled);
         this.cascade(function (item) {
             if (typeof item.setReadOnly === 'function') {
                 item.setReadOnly(disabled);

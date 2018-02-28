@@ -1,6 +1,6 @@
 Ext.define('PowerMon.store.Phones', {
     extend: 'Ext.data.Store',
-    fields: ['phone'],
+    model: 'PowerMon.model.Phone',
     autoLoad: false,
     remoteSort: false,
     constructor1: function (config) {

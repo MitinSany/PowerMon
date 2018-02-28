@@ -1,11 +1,8 @@
-Ext.define('PowerMon.controller.SwList', {
+Ext.define('PowerMon.controller.switches.Switches', {
     extend: 'Ext.app.Controller',
-    stores: [
-        'SwListStore', 'Emails', 'Phones'
-    ],
-    views: [
-        'SwList', 'SwListEdit'
-    ],
+    requires: ['PowerMon.view.switches.View'],
+    stores: ['Switches', 'Emails', 'Phones'],
+    views: ['switches.View', 'switches.List', 'switches.Edit'],
 
     init: function (appllication) {
         if (this.inited) {
@@ -16,22 +13,20 @@ Ext.define('PowerMon.controller.SwList', {
         this.control({
             'swlist #refresh': {
                 click: function (self) {
-                    Ext.getStore('SwListStore').read();
+                    Ext.getStore('Switches').read();
                 }
             },
             'swlist': {
                 selectionchange: function (self, selected, eOpts) {
                     if (selected.length > 0) {
-                        self.view.up('swlist').down('#del_sw').setDisabled(
-                            false);
-                        self.view.up('swlist').down('#edit_sw').setDisabled(
-                            false);
+                        self.view.up('swlist').down('#del_sw').setDisabled(false);
+                        self.view.up('swlist').down('#edit_sw').setDisabled(false);
 
-                        var form = self.view.up('#card-sw').down('swlistedit')
-                            .getForm();
+                        var form = self.view.up('#card-switch').down('swlistedit').getForm();
                         form.reset();
 
                         var rec = self.store.getById(selected[0].getId());
+                        //form.loadRecord(selected[0]);
                         for (var key in rec.raw) {
                             var field = form.findField(key);
                             if (field != null) {
@@ -72,7 +67,7 @@ Ext.define('PowerMon.controller.SwList', {
                                                     icon: Ext.MessageBox.WARNING
                                                 });
                                             } else {
-                                                Ext.getStore('SwListStore').reload();
+                                                Ext.getStore('Switches').reload();
                                             }
                                         });
                                 }
@@ -92,14 +87,16 @@ Ext.define('PowerMon.controller.SwList', {
                 click: function (self) {
                     var list = self.up('#maincard').down('swlist');
                     //console.log(list.getView().getSelectionModel(),list.getView().getSelectionModel().getSelection());
-                    list.fireEvent('selectionchange', list.getView()
-                        .getSelectionModel(), list.getView()
-                        .getSelectionModel().getSelection());
+                    list.fireEvent(
+                        'selectionchange',
+                        list.getView().getSelectionModel(),
+                        list.getView().getSelectionModel().getSelection()
+                    );
                     var edit = self.up('#maincard').down('swlistedit');
                     edit.toggleEditState(true);
                 }
             },
-            'swlistedit #edit_cancel': {
+            'swlistedit #cancel': {
                 click: function (self) {
                     self.up('#maincard').down('swlist').fireEvent(
                         'selectionchange',
@@ -111,14 +108,32 @@ Ext.define('PowerMon.controller.SwList', {
                     edit.toggleEditState(false);
                 }
             },
-            'swlistedit #edit_save': {
+            'swlistedit #save': {
                 click: function (self) {
                     var edit = self.up('#swlistedit');
                     edit.toggleEditState(false);
-
-                    var rec = edit.getForm().getFieldValues()
-                    exPmon.save_sw(rec, function (ret) {
-                        if (ret['status'] == false) {
+//                    var values = edit.getForm().getFieldValues();
+//                    this.getStore('Switches').add(values);
+//                    this.getStore('Switches').sync();
+                    /*Ext.Ajax.request({
+                        url: '/switches/save',
+                        method: 'POST',
+                        params: values,
+                        success: function (response) {
+                            var data = Ext.decode(response.responseText);
+                            if (data.status === true) {
+                                Ext.getStore('Switches').reload({
+                                    callback: function () {
+                                        /*var list=Ext.getCmp('swlist');
+                                        list.fireEvent(
+                                            'selectionchange',
+                                            list.getView().getSelectionModel(),
+                                            list.getView().getSelectionModel().getSelection());   //*
+                                    }
+                                });
+                            }
+                        },
+                        failure: function () {
                             Ext.MessageBox.show({
                                 title: 'Ошибка',
                                 msg: 'Во время сохранения возникла ошибка.<br/>'
@@ -126,19 +141,8 @@ Ext.define('PowerMon.controller.SwList', {
                                 buttons: Ext.MessageBox.OK,
                                 icon: Ext.MessageBox.WARNING
                             });
-                        } else {
-                            Ext.getStore('SwListStore').reload({
-                                callback: function () {
-                                    /*var list=Ext.getCmp('swlist');
-                                    list.fireEvent(
-                                        'selectionchange',
-                                        list.getView().getSelectionModel(),
-                                        list.getView().getSelectionModel().getSelection());   //*/
-                                }
-                            });
                         }
-
-                    });
+                    });//*/
                 }
             },
             'swlistedit #check_snmp': {
@@ -146,8 +150,7 @@ Ext.define('PowerMon.controller.SwList', {
                     var btn = self.up('#maincard').down('#check_snmp')
                     btn.setDisabled(true);
                     btn.setIcon('res/loading.gif');
-                    var form = self.up('#maincard').down('swlistedit')
-                        .getForm();
+                    var form = self.up('#maincard').down('swlistedit').getForm();
                     var data = {};
                     data['ip'] = form.findField('ip').getValue();
                     data['community'] = form.findField('community')

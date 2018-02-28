@@ -52,3 +52,15 @@
 .cancel {
     background-image: url(../images/app/cancel.png)
 }
+.system-log-out {
+    background-image: url(../images/app/system-log-out-22.png)
+}
+.system-shutdown {
+    background-image: url(../images/app/system-shutdown-22.png)
+}
+.system-switch-user {
+    background-image: url(../images/app/system-switch-user-22.png)
+}
+.user-properties {
+    background-image: url(../images/app/user-properties-22.png)
+}

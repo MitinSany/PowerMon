@@ -1,4 +1,4 @@
-Ext.define('PowerMon.view.Calendar', {
+Ext.define('PowerMon.view.calendar.Calendar', {
     extend: 'Ext.panel.Panel',
     requires: ['Ext.grid.plugin.CellEditing'],
     alias: 'widget.calendar',

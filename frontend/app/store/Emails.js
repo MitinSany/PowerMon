@@ -1,15 +1,26 @@
 Ext.define('PowerMon.store.Emails', {
     extend: 'Ext.data.Store',
-    fields: ['email'],
+    model: 'PowerMon.model.Email',
     autoLoad: false,
+    autoSync: true,
     remoteSort: false,
-    constructor1: function (config) {
-        Ext.applyIf(config, {
-            proxy: {
-                type: 'direct',
-                directFn: exPmon.get_store_emails
-            }
-        });
-        this.callParent([config]);
+    proxy: {
+        type: 'ajax',
+        api: {
+            read: '/stores/emails/view',
+            create: '/stores/emails/create',
+            update: '/stores/emails/update',
+            destroy: '/stores/emails/destroy'
+        },
+        reader: {
+            type: 'json',
+            successProperty: 'success',
+            root: 'data',
+            messageProperty: 'message'
+        },
+        writer: {
+            type: 'json',
+            root: 'data'
+        },
     }
 }); 

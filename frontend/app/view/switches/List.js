@@ -1,8 +1,8 @@
-Ext.define('PowerMon.view.SwList', {
+Ext.define('PowerMon.view.switches.List', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.swlist',
-    requires: ['Ext.grid.column.Action'],
-    store: ['SwListStore'],
+    requires: ['Ext.tip.*', 'Ext.grid.column.Action'],
+    store: ['Switches'],
     border: false,
     loadMask: false,
     itemId: 'grid1',
