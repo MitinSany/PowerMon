@@ -4,10 +4,13 @@ Ext.define('PowerMon.Application', {
     requires: ['PowerMon.user.Token', 'PowerMon.user.Profile'],
 
     controllers: [
-        'login.Login', 'main.Main', 'switches.Switches', 'main.Spotlight', 'calendar.Calendar', 'log.Log'
+        'login.Login', 'main.Main', 'main.Spotlight',
+        'switches.Switches', 'switches.Edit',
+        'calendar.Calendar',
+        'log.Log'
     ],
 
-    stores: [],
+    stores: ['Switches', 'Emails'],
 
     autoCreateViewport: false,
 

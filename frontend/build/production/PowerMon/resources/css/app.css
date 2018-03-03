@@ -1,3 +1,17 @@
+.x-spotlight {
+    background-color: #ccc;
+    z-index: 8999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -moz-opacity: 0.5;
+    opacity: .50;
+    filter: alpha(opacity = 50);
+    width: 0;
+    height: 0;
+    zoom: 1;
+}
+
 .btn_switch {
     background-image: url(../images/app/preferences-desktop-icons-22.png)
 }
@@ -13,7 +27,6 @@
 .btn_about {
     background-image: url(../images/app/help-about-22.png)
 }
-
 .add_sw {
     background-image: url(../images/app/add.png)
 }
@@ -63,4 +76,10 @@
 }
 .user-properties {
     background-image: url(../images/app/user-properties-22.png)
+}
+.system-users {
+    background-image: url(../images/app/system-users-22.png)
+}
+.preferences-system {
+    background-image: url(../images/app/preferences-system-22.png)
 }

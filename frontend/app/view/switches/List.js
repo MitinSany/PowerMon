@@ -2,7 +2,7 @@ Ext.define('PowerMon.view.switches.List', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.swlist',
     requires: ['Ext.tip.*', 'Ext.grid.column.Action'],
-    store: ['Switches'],
+    store: 'Switches',
     border: false,
     loadMask: false,
     itemId: 'grid1',
@@ -32,11 +32,11 @@ Ext.define('PowerMon.view.switches.List', {
     }],
     columns: [{
         header: 'SNMP',
-        dataIndex: 'status',
+        dataIndex: 'snmp_status',
         align: 'center',
         draggable: false,
         menuDisabled: true,
-        width: 40,
+        width: 50,
         renderer: function (value) {
             if (value == '1') {
                 return '<div class="buble_green"></div>';
@@ -54,7 +54,7 @@ Ext.define('PowerMon.view.switches.List', {
          * menuDisabled : true }
          */
         {
-            header: 'Ping',
+            header: 'PING',
             dataIndex: 'ping',
             align: 'left',
             draggable: false,
@@ -143,6 +143,7 @@ Ext.define('PowerMon.view.switches.List', {
             }
         }
     ],
+
     initComponent: function () {
         this.callParent(arguments);
         this.getStore().on('beforeload', this.rememberSelection, this);

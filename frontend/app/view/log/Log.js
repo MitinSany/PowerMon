@@ -14,7 +14,7 @@ Ext.define('PowerMon.view.log.Log', {
         viewConfig: {
             loadMask: false
         },//*/
-        store: ['Logs'],
+        store: 'Logs',
         columns: [{
             header: 'Дата',
             dataIndex: 'date',
@@ -58,7 +58,7 @@ Ext.define('PowerMon.view.log.Log', {
             typeAhead: false,
             triggerAction: 'all',
             selectOnTab: true,
-            store: ['LogSw'],
+            store: 'LogSw',
             lazyRender: true,
             displayField: 'name',
             valueField: 'id',

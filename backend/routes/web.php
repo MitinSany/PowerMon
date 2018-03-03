@@ -17,3 +17,14 @@ $router->get('/', function () use ($router) {
 
 $router->post('/auth/login', 'AuthController@postLogin');
 $router->get('/user', 'UserController@getUserData');
+
+$router->group(['prefix' => 'stores'], function () use ($router) {
+    $router->group(['prefix' => 'switches'], function () use ($router) {
+        $router->get('read',  ['uses' => 'SwitchController@read']);
+    });
+    $router->get('authors',  ['uses' => 'AuthorController@showAllAuthors']);
+    $router->get('authors/{id}', ['uses' => 'AuthorController@showOneAuthor']);
+    $router->post('authors', ['uses' => 'AuthorController@create']);
+    $router->delete('authors/{id}', ['uses' => 'AuthorController@delete']);
+    $router->put('authors/{id}', ['uses' => 'AuthorController@update']);
+});

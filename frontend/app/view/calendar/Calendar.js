@@ -14,7 +14,7 @@ Ext.define('PowerMon.view.calendar.Calendar', {
         region: 'center',
         itemId: 'CalendarGrid',
         title: 'Календарь',
-        store: ['Calendar'],
+        store: 'Calendar',
         selType: 'cellmodel',
         loadMask: false,
         viewConfig: {
