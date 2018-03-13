@@ -198,7 +198,7 @@ Ext.define('PowerMon.view.switches.Edit', {
                 },
                 items: [
                     {
-                        name: 'email1',
+                        name: 'email0',
                         xtype: 'combobox',
                         fieldLabel: 'Адрес 1',
                         displayField: 'email',
@@ -211,11 +211,24 @@ Ext.define('PowerMon.view.switches.Edit', {
                         labelWidth: 80
 
                     }, {
-                        name: 'email2',
+                        name: 'email1',
                         xtype: 'combobox',
                         fieldLabel: 'Адрес 2',
                         displayField: 'email',
-                        valueField: 'email',
+                        valueField: 'id',
+                        store: 'Emails',
+                        queryMode: 'local',
+                        allowBlank: true,
+                        typeAhead: false,
+                        labelAlign: 'right',
+                        labelWidth: 80
+
+                    }, {
+                        name: 'email2',
+                        xtype: 'combobox',
+                        fieldLabel: 'Адрес 3',
+                        displayField: 'email',
+                        valueField: 'id',
                         store: 'Emails',
                         queryMode: 'local',
                         allowBlank: true,
@@ -226,22 +239,9 @@ Ext.define('PowerMon.view.switches.Edit', {
                     }, {
                         name: 'email3',
                         xtype: 'combobox',
-                        fieldLabel: 'Адрес 3',
-                        displayField: 'email',
-                        valueField: 'email',
-                        store: 'Emails',
-                        queryMode: 'local',
-                        allowBlank: true,
-                        typeAhead: false,
-                        labelAlign: 'right',
-                        labelWidth: 80
-
-                    }, {
-                        name: 'email4',
-                        xtype: 'combobox',
                         fieldLabel: 'Адрес 4',
                         displayField: 'email',
-                        valueField: 'email',
+                        valueField: 'id',
                         store: 'Emails',
                         queryMode: 'local',
                         allowBlank: true,
@@ -262,11 +262,11 @@ Ext.define('PowerMon.view.switches.Edit', {
                 },
                 items: [
                     {
-                        name: 'phone_number1',
+                        name: 'phone0',
                         xtype: 'combobox',
                         fieldLabel: 'Номер 1',
                         displayField: 'phone',
-                        valueField: 'phone',
+                        valueField: 'id',
                         store: 'Phones',
                         queryMode: 'local',
                         allowBlank: true,
@@ -274,11 +274,11 @@ Ext.define('PowerMon.view.switches.Edit', {
                         labelAlign: 'right',
                         labelWidth: 80
                     }, {
-                        name: 'phone_number2',
+                        name: 'phone1',
                         xtype: 'combobox',
                         fieldLabel: 'Номер 2',
                         displayField: 'phone',
-                        valueField: 'phone',
+                        valueField: 'id',
                         store: 'Phones',
                         queryMode: 'local',
                         allowBlank: true,
@@ -286,11 +286,11 @@ Ext.define('PowerMon.view.switches.Edit', {
                         labelAlign: 'right',
                         labelWidth: 80
                     }, {
-                        name: 'phone_number3',
+                        name: 'phone2',
                         xtype: 'combobox',
                         fieldLabel: 'Номер 3',
                         displayField: 'phone',
-                        valueField: 'phone',
+                        valueField: 'id',
                         store: 'Phones',
                         queryMode: 'local',
                         allowBlank: true,
@@ -298,11 +298,11 @@ Ext.define('PowerMon.view.switches.Edit', {
                         labelAlign: 'right',
                         labelWidth: 80
                     }, {
-                        name: 'phone_number4',
+                        name: 'phone3',
                         xtype: 'combobox',
                         fieldLabel: 'Номер 4',
                         displayField: 'phone',
-                        valueField: 'phone',
+                        valueField: 'id',
                         store: 'Phones',
                         queryMode: 'local',
                         allowBlank: true,
@@ -313,29 +313,5 @@ Ext.define('PowerMon.view.switches.Edit', {
                 ]
             }
         ]
-    },
-
-    initComponent: function () {
-        this.callParent(arguments);
-    },
-
-    toggleEditState: function (enable) {
-        if (enable === true) {
-            this.fireEvent('spotlightshow', this.id);
-        } else {
-            this.fireEvent('spotlighthide', this.id);
-        }
-
-        var disabled = !enable;
-        this.down('button#save').setDisabled(!this.getForm().isValid() || disabled);
-        this.down('button#cancel').setDisabled(disabled);
-        this.down('button#check_snmp').setDisabled(disabled);
-        this.down('button#check_snmpwalk').setDisabled(disabled);
-        this.cascade(function (item) {
-            if (typeof item.setReadOnly === 'function') {
-                item.setReadOnly(disabled);
-            }
-        });
     }
-
 });

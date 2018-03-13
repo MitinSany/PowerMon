@@ -1,12 +1,31 @@
 Ext.define('PowerMon.controller.switches.Edit', {
     extend: 'Ext.app.Controller',
-    //requires: ['PowerMon.view.switches.View'],
     stores: ['Switches', 'Emails', 'Phones'],
-    views: ['switches.View', 'switches.List', 'switches.Edit'],
+    views: ['switches.Edit'],
+
+
+    refs: [{
+        ref: 'editForm',
+        selector: 'swlistedit'
+    }],
 
     init: function (appllication) {
+        this.listen({
+            controller: {
+                '*': {
+                    toggleeditstate: this.toggleEditState,
+                    editformreset: this.editFormReset,
+                    loadrecord: this.loadRecord
+                }
+            }
+        });
 
         this.control({
+            'swlistedit': {
+                render: function () {
+                    this.toggleEditState(false);
+                }
+            },
             'swlistedit #cancel': {
                 click: function (self) {
                     self.up('#maincard').down('swlist').fireEvent(
@@ -16,17 +35,15 @@ Ext.define('PowerMon.controller.switches.Edit', {
                         self.up('#maincard').down('swlist').getView()
                             .getSelectionModel().getSelection());
                     var edit = self.up('#swlistedit');
-                    edit.toggleEditState(false);
+                    this.toggleEditState(false);
                 }
             },
             'swlistedit #save': {
                 click: function (self) {
-                    var edit = self.up('#swlistedit');
-                    edit.toggleEditState(false);
-                    var values = edit.getForm().getFieldValues();
-                    console.log(values);
-                    this.getStore('Switches').add(values);
-                    this.getStore('Switches').sync();
+                    //var edit = self.up('#swlistedit');
+                    this.toggleEditState(false);
+                    this.saveRecord();
+                    //this.getStore('Switches').sync();
                     /*Ext.Ajax.request({
                         url: '/switches/save',
                         method: 'POST',
@@ -148,5 +165,81 @@ Ext.define('PowerMon.controller.switches.Edit', {
                 }
             }
         });
+    },
+
+    toggleEditState: function (enable) {
+
+        var form = this.getEditForm();
+
+        if (enable === true) {
+            this.fireEvent('spotlightshow', form.id);
+        } else {
+            this.fireEvent('spotlighthide', form.id);
+        }
+
+        form.down('button#save').setDisabled(!form.getForm().isValid() || !enable);
+        form.down('button#cancel').setDisabled(!enable);
+        form.down('button#check_snmp').setDisabled(!enable);
+        form.down('button#check_snmpwalk').setDisabled(!enable);
+        form.cascade(function (item) {
+            if (typeof item.setReadOnly === 'function') {
+                item.setReadOnly(!enable);
+            }
+        });
+    },
+
+    editFormReset: function () {
+        this.getEditForm().getForm().reset();
+    },
+
+    loadRecordArrayForm: function (recordRaw, key) {
+        var editForm = this.getEditForm().getForm();
+        var fullKey = key + 's';
+        if (typeof recordRaw[fullKey] !== 'undefined' && recordRaw[fullKey].length > 0) {
+            for (var i = 0; i < recordRaw[fullKey].length; i++) {
+                editForm.findField(key + i).setValue(recordRaw[fullKey][i].id);
+            }
+        }
+    },
+
+    getRecordArrayForm: function (recordRaw, needKey) {
+        var result = [];
+        for (var key in recordRaw) {
+            var value = recordRaw[key];
+            if (value != '' && key.indexOf(needKey) === 0) {
+                var resultKey = typeof value === 'string' ? needKey : 'id';
+                var item = {};
+                item[resultKey] = value;
+                result.push(item);
+            }
+        }
+        return result;
+    },
+
+    loadRecord: function (record) {
+        var editForm = this.getEditForm().getForm();
+        editForm.loadRecord(record);
+        if (typeof record.raw !== 'undefined') {
+            this.loadRecordArrayForm(record.raw, 'email');
+            this.loadRecordArrayForm(record.raw, 'phone');
+        }
+    },
+
+    saveRecord: function () {
+        var editForm = this.getEditForm();
+        var record = editForm.getRecord();
+        var formData = editForm.getValues();
+        formData.emails = this.getRecordArrayForm(formData, 'email');
+        formData.phones = this.getRecordArrayForm(formData, 'phone');
+        for (var key in formData) {
+            record.set(key, formData[key]);
+        }
+
+        var store = Ext.getStore('Switches');
+        if (record.stores.length === 0) {
+            store.add(record);
+        }
+        store.sync();
     }
 });
+

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DevSwitch;
+use App\Models\Email;
+use App\Models\Phone;
+use Laravel\Lumen\Exceptions\BadMethodCallException;
 use Illuminate\Http\Request;
 use \Exception;
 use Illuminate\Support\Facades\Auth;
@@ -18,28 +22,78 @@ class SwitchController extends Controller
         $this->middleware('auth');
     }
 
-    public function read(Request $request)
+    public static function getNestedData(DevSwitch $record) {
+        $result = $record->toArray();
+        $result['emails'] = $record->emails()->get()->toArray();
+        $result['phones'] = $record->phones()->get()->toArray();
+        return $result;
+    }
+
+    public function all(Request $request) {
+        /**
+         * @var $record DevSwitch
+         * @var $email Email
+         * @var $phone Phone
+         */
+        $records = DevSwitch::all()->map([$this, 'getNestedData']);
+
+        return response()->json(['success' => true, 'data' => $records, 'total' => count($records)]);
+    }
+
+    public function read(int $id)
     {
-        $data[] = [
-            'id' => 1,
-            'technical_site_name' => 'tp-sdwsd',
-            'snmp_status' => 2,
-            'email1' => 'qq',
-            'emails' => [['id' => 1], ['id' => 2]]
-        ];
+        $switch = DevSwitch::findOrFail($id);
+        $records[]=self::getNestedData($switch);
+        return response()->json(['success' => true, 'data' => $records, 'total' => count($records)]);
+    }
 
+    protected function createUpdate(DevSwitch $switch, array $data) {
+        $switch->fill($data);
+        $switch->save();
+        $switch->toManySync('email', $data['emails']);
+        $switch->toManySync('phone', $data['phones']);
+        return $this->read($switch->id);
+    }
 
-        return response()->json(['success' => true, 'data' => $data, 'total' => count($data)]);
-        try {
-            $user = Auth::user();
-            $data = $user->first()->toArray();
-            foreach ($user->roles()->get() as $role) {
-                $data['roles'][] = $role->name;
-            }
-
-            return response()->json(['status' => true, 'data' => $data]);
-        } catch (Exception $e) {
-            return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
+    public function create(Request $request)
+    {
+        $input = $request->all();
+        if (!array_key_exists('data', $input) || !array_key_exists('id', $input['data'])) {
+            throw new BadMethodCallException('Missting "data" field');
         }
+        $data = $input['data'];
+        /**
+         * @var $switch DevSwitch
+         */
+        $switch = new DevSwitch();
+        return $this->createUpdate($switch, $data);
+    }
+
+    public function update(Request $request)
+    {
+        $input = $request->all();
+        if (!array_key_exists('data', $input) || !array_key_exists('id', $input['data'])) {
+            throw new BadMethodCallException('Missting "data" field');
+        }
+        $data = $input['data'];
+        /**
+         * @var $switch DevSwitch
+         */
+        $switch = DevSwitch::findOrFail($data['id']);
+        return $this->createUpdate($switch, $data);
+    }
+
+    public function delete(Request $request)
+    {
+        $input = $request->all();
+        if (!array_key_exists('data', $input) || !array_key_exists('id', $input['data'])) {
+            throw new BadMethodCallException('Missting "data" field');
+        }
+        $data = $input['data'];
+        /**
+         * @var $switch DevSwitch
+         */
+        $deleteCount = DevSwitch::destroy($data['id']);
+        return response()->json(['success' => $deleteCount > 0]);
     }
 }

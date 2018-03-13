@@ -70,14 +70,14 @@ Ext.define('PowerMon.view.switches.List', {
         },
         {
             header: 'Техплощадка',
-            dataIndex: 'tp',
+            dataIndex: 'technical_site_name',
             align: 'left',
             draggable: false,
             menuDisabled: true
         },
         {
             header: 'Свитч',
-            dataIndex: 'sw',
+            dataIndex: 'switch_name',
             align: 'left',
             draggable: false,
             menuDisabled: true
@@ -88,11 +88,14 @@ Ext.define('PowerMon.view.switches.List', {
             align: 'center',
             draggable: false,
             menuDisabled: true,
-            width: 40
+            width: 40,
+            renderer: function (value) {
+                return value > 0 ? value : '';
+            }
         },
         {
             header: 'IP',
-            dataIndex: 'ip',
+            dataIndex: 'snmp_ip',
             align: 'left',
             draggable: false,
             menuDisabled: true
@@ -127,8 +130,8 @@ Ext.define('PowerMon.view.switches.List', {
             }]
         },
         {
-            header: 'MRTG',
-            dataIndex: 'mrtg',
+            header: 'URL',
+            dataIndex: 'link',
             align: 'center',
             sortable: false,
             draggable: false,

@@ -22,5 +22,9 @@ Ext.define('PowerMon.store.Emails', {
             type: 'json',
             root: 'data'
         },
-    }
+    },
+    data: [
+        {id: 1, email: 'e1'},
+        {id: 2, email: 'e2'},
+    ]
 }); 
