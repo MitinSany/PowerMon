@@ -2,29 +2,32 @@ Ext.define('PowerMon.store.Emails', {
     extend: 'Ext.data.Store',
     model: 'PowerMon.model.Email',
     autoLoad: false,
-    autoSync: true,
+    autoSync: false,
     remoteSort: false,
     proxy: {
         type: 'ajax',
         api: {
-            read: '/stores/emails/view',
+            read: '/stores/emails/all',
             create: '/stores/emails/create',
             update: '/stores/emails/update',
-            destroy: '/stores/emails/destroy'
+            destroy: '/stores/emails/delete'
+        },
+        actionMethods: {
+            create: 'POST',
+            read: 'GET',
+            update: 'PUT',
+            destroy: 'DELETE'
         },
         reader: {
             type: 'json',
-            successProperty: 'success',
             root: 'data',
-            messageProperty: 'message'
+            successProperty: 'success',
+            totalProperty: 'total',
+            //messageProperty: 'message'
         },
         writer: {
             type: 'json',
             root: 'data'
-        },
-    },
-    data: [
-        {id: 1, email: 'e1'},
-        {id: 2, email: 'e2'},
-    ]
+        }
+    }
 }); 

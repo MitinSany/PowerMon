@@ -41,6 +41,7 @@ Ext.define('PowerMon.controller.switches.Switches', {
                                 var selectedRecord = list.getView().getSelectionModel().getSelection()[0];
                                 list.getView().getSelectionModel().deselectAll();
                                 list.getStore().remove(selectedRecord);
+                                list.getStore().sync();
                             }
                         }
                     });

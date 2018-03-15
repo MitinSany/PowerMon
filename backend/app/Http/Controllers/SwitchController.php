@@ -22,14 +22,16 @@ class SwitchController extends Controller
         $this->middleware('auth');
     }
 
-    public static function getNestedData(DevSwitch $record) {
+    public static function getNestedData(DevSwitch $record)
+    {
         $result = $record->toArray();
         $result['emails'] = $record->emails()->get()->toArray();
         $result['phones'] = $record->phones()->get()->toArray();
         return $result;
     }
 
-    public function all(Request $request) {
+    public function all(Request $request)
+    {
         /**
          * @var $record DevSwitch
          * @var $email Email
@@ -43,11 +45,15 @@ class SwitchController extends Controller
     public function read(int $id)
     {
         $switch = DevSwitch::findOrFail($id);
-        $records[]=self::getNestedData($switch);
+        $records[] = self::getNestedData($switch);
         return response()->json(['success' => true, 'data' => $records, 'total' => count($records)]);
     }
 
-    protected function createUpdate(DevSwitch $switch, array $data) {
+    protected function createUpdate(DevSwitch $switch, array $data)
+    {
+        /*try {
+
+        } catch ()*/
         $switch->fill($data);
         $switch->save();
         $switch->toManySync('email', $data['emails']);

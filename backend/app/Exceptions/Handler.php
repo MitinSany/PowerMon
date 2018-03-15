@@ -46,8 +46,9 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $e)
     {
         if ($request->expectsJson()) {
-            $code = $e->getCode() === 0 ? 500 : $e->getCode();
+            $status = $e->getCode();
             $return = [
+                'success' => false,
                 'error' => [
                     'errors' => [
                         'file' => $e->getFile(),
@@ -55,12 +56,12 @@ class Handler extends ExceptionHandler
                         'exception' => (new \ReflectionClass($e))->getShortName(),
                         'trace' => $e->getTraceAsString()
                     ],
-                    'code' => $code,
+                    'code' => $status,
                     'message' => $e->getMessage()
                 ]
             ];
 
-            return response()->json($return, $code);
+            return response()->json($return, 500);
         }
 
         return parent::render($request, $e);

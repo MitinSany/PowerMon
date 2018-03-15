@@ -26,10 +26,14 @@ $router->group(['prefix' => 'stores'], function () use ($router) {
         $router->put('update', ['uses' => 'SwitchController@update']);
         $router->delete('delete', ['uses' => 'SwitchController@delete']);
     });
+});
 
-    $router->get('authors', ['uses' => 'AuthorController@showAllAuthors']);
-    $router->get('authors/{id}', ['uses' => 'AuthorController@showOneAuthor']);
-    $router->post('authors', ['uses' => 'AuthorController@create']);
-    $router->delete('authors/{id}', ['uses' => 'AuthorController@delete']);
-    $router->put('authors/{id}', ['uses' => 'AuthorController@update']);
+$router->group(['prefix' => 'stores'], function () use ($router) {
+    $router->group(['prefix' => 'emails'], function () use ($router) {
+        $router->get('all', ['uses' => 'EmailController@all']);
+//        $router->get('read/{id}', ['uses' => 'EmailController@read', 'as' => 'stores/emails/read']);
+        $router->post('create', ['uses' => 'EmailController@create']);
+//        $router->put('update', ['uses' => 'EmailController@update']);
+//        $router->delete('delete', ['uses' => 'EmailController@delete']);
+    });
 });

@@ -20,7 +20,7 @@ class CreatePhoneSwitchTable extends Migration
             $table->unsignedInteger('phone_id')->index();
             $table->foreign('phone_id')->references('id')->on('phones')->onDelete('cascade');
 
-            $table->timestampsTz();
+            //$table->timestampsTz();
         });
     }
 

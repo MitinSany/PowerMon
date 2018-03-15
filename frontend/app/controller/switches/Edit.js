@@ -1,5 +1,6 @@
 Ext.define('PowerMon.controller.switches.Edit', {
     extend: 'Ext.app.Controller',
+    requires: ['PowerMon.util.Utilities'],
     stores: ['Switches', 'Emails', 'Phones'],
     views: ['switches.Edit'],
 
@@ -206,7 +207,7 @@ Ext.define('PowerMon.controller.switches.Edit', {
         var result = [];
         for (var key in recordRaw) {
             var value = recordRaw[key];
-            if (value != '' && key.indexOf(needKey) === 0) {
+            if (value !== '' && key.indexOf(needKey) === 0) {
                 var resultKey = typeof value === 'string' ? needKey : 'id';
                 var item = {};
                 item[resultKey] = value;
@@ -217,6 +218,7 @@ Ext.define('PowerMon.controller.switches.Edit', {
     },
 
     loadRecord: function (record) {
+        this.editFormReset();
         var editForm = this.getEditForm().getForm();
         editForm.loadRecord(record);
         if (typeof record.raw !== 'undefined') {
@@ -225,21 +227,45 @@ Ext.define('PowerMon.controller.switches.Edit', {
         }
     },
 
+    addIfMissing: function (formData, name) {
+        var storeName = PowerMon.util.Utilities.ucFirst(name + 's');
+        var store = Ext.getStore(storeName);
+        for (var i = 0; i < 4; i++) {
+            var formField = 'email' + i;
+            if (store.find(name, formData[formField]) < 0) {
+                var record = Ext.create(store.model.modelName);
+                record.set(name, formData[formField]);
+                store.add(record);
+            }
+        }
+        store.sync();
+    },
+
     saveRecord: function () {
         var editForm = this.getEditForm();
         var record = editForm.getRecord();
         var formData = editForm.getValues();
+
+        this.addIfMissing(formData, 'email');
+
         formData.emails = this.getRecordArrayForm(formData, 'email');
         formData.phones = this.getRecordArrayForm(formData, 'phone');
         for (var key in formData) {
-            record.set(key, formData[key]);
+            if (record.fields.map[key] !== undefined) {
+                record.set(key, formData[key]);
+            }
         }
 
         var store = Ext.getStore('Switches');
         if (record.stores.length === 0) {
             store.add(record);
         }
-        store.sync();
+        store.sync({
+            failure: function (batch, op) {
+                // TODO: handle error message
+                var errorInfo = batch.exceptions[0].getError();
+                Ext.Msg.alert('Error', errorInfo['status'] + ' ' + errorInfo['statusText']);
+            }
+        });
     }
 });
-

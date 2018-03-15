@@ -22,6 +22,7 @@ trait ModelEx
                 $newItem->save();
 
                 $this->$fieldName()->attach($newItem->id);
+                $existIds[] = $newItem->id;
             } else {
                 //unknown item
             }

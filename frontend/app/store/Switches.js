@@ -2,7 +2,7 @@ Ext.define('PowerMon.store.Switches', {
     extend: 'Ext.data.Store',
     model: 'PowerMon.model.Switch',
     autoLoad: false,
-    autoSync: true,
+    autoSync: false,
     remoteSort: false,
     proxy: {
         type: 'ajax',
@@ -28,6 +28,6 @@ Ext.define('PowerMon.store.Switches', {
         writer: {
             type: 'json',
             root: 'data'
-        },
-    },
-})
+        }
+    }
+});
