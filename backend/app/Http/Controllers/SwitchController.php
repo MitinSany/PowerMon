@@ -64,7 +64,7 @@ class SwitchController extends Controller
     public function create(Request $request)
     {
         $input = $request->all();
-        if (!array_key_exists('data', $input) || !array_key_exists('id', $input['data'])) {
+        if (!array_key_exists('data', $input)) {
             throw new BadMethodCallException('Missting "data" field');
         }
         $data = $input['data'];
@@ -78,7 +78,7 @@ class SwitchController extends Controller
     public function update(Request $request)
     {
         $input = $request->all();
-        if (!array_key_exists('data', $input) || !array_key_exists('id', $input['data'])) {
+        if (!array_key_exists('data', $input)) {
             throw new BadMethodCallException('Missting "data" field');
         }
         $data = $input['data'];

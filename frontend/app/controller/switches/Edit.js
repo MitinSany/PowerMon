@@ -233,9 +233,11 @@ Ext.define('PowerMon.controller.switches.Edit', {
         for (var i = 0; i < 4; i++) {
             var formField = 'email' + i;
             if (store.find(name, formData[formField]) < 0) {
-                var record = Ext.create(store.model.modelName);
-                record.set(name, formData[formField]);
-                store.add(record);
+                if (store.find(name, formField) < 0) {
+                    var record = Ext.create(store.model.modelName);
+                    record.set(name, formData[formField]);
+                    store.add(record);
+                }
             }
         }
         store.sync();

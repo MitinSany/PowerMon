@@ -27,7 +27,8 @@ Ext.define('PowerMon.store.Emails', {
         },
         writer: {
             type: 'json',
-            root: 'data'
+            root: 'data',
+            allowSingle: false
         }
     }
 }); 
