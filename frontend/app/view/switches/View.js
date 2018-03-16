@@ -26,8 +26,8 @@ Ext.define('PowerMon.view.switches.View', {
 
         }
     ],
-    initComponent: function () {
+/*    initComponent: function () {
         this.callParent(arguments);
 
-    }
+    }*/
 });

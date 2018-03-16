@@ -3,13 +3,31 @@ Ext.define('PowerMon.store.Phones', {
     model: 'PowerMon.model.Phone',
     autoLoad: false,
     remoteSort: false,
-    constructor1: function (config) {
-        Ext.applyIf(config, {
-            proxy: {
-                type: 'direct',
-                directFn: exPmon.get_store_phones
-            }
-        });
-        this.callParent([config]);
+    proxy: {
+        type: 'ajax',
+        api: {
+            read: '/stores/phones/all',
+            create: '/stores/phones/create',
+//            update: '/stores/phones/update',
+//            destroy: '/stores/phones/delete'
+        },
+        actionMethods: {
+            create: 'POST',
+            read: 'GET',
+            update: 'PUT',
+            destroy: 'DELETE'
+        },
+        reader: {
+            type: 'json',
+            root: 'data',
+            successProperty: 'success',
+            totalProperty: 'total',
+            //messageProperty: 'message'
+        },
+        writer: {
+            type: 'json',
+            root: 'data',
+            allowSingle: false
+        }
     }
 }); 

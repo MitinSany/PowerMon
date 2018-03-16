@@ -39,7 +39,7 @@ Ext.define('PowerMon.controller.login.Login', {
                     tokenObj.setTokenHeader(data.token);
                     loginDialog.destroy();
                     tokenObj.saveToken(data.token);
-                    Ext.widget('mainview');
+                    me.getApplication().fireEvent('createmainwindow');
                 }
             },
             failure: function () {
@@ -55,7 +55,7 @@ Ext.define('PowerMon.controller.login.Login', {
         me.getApplication().getTokenObj().clearToken();
         me.getApplication().getTokenObj().cleanTokenHeader();
         me.getApplication().appUser = undefined;
-        mainView.destroy();
+        me.getApplication().fireEvent('destroymainwindow');
         Ext.widget('loginform');
     },
 

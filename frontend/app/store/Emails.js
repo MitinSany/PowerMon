@@ -8,8 +8,8 @@ Ext.define('PowerMon.store.Emails', {
         type: 'ajax',
         api: {
             read: '/stores/emails/all',
-            create: '/stores/emails/create',
-            update: '/stores/emails/update',
+//            create: '/stores/emails/create',
+//            update: '/stores/emails/update',
             destroy: '/stores/emails/delete'
         },
         actionMethods: {

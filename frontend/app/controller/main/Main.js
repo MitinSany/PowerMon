@@ -2,21 +2,69 @@ Ext.define('PowerMon.controller.main.Main', {
     extend: 'Ext.app.Controller',
     requires: ['PowerMon.user.Profile', 'PowerMon.view.main.Toolbar', 'Ext.ux.Spotlight'],
     views: ['main.View'],
-    stores: ['Phones', 'Emails'],
+    stores: ['TablesRevisions', 'Phones', 'Emails'],
+
+    POLL_INTERVAL: 10 * 1000,
+    syncStoresData: {},
 
     init: function (application) {
         this.listen({
             controller: {
                 '*': {
-                    createmainwindow: this.createMainWindow
+                    createmainwindow: this.createMainWindow,
+                    destroymainwindow: this.destroyMainWindow,
                 }
             }
         });
         this.spot = Ext.create('Ext.ux.Spotlight');
+        this.poller = Ext.create('Ext.util.DelayedTask', this.updateStats, this);
     },
 
-    createMainWindow: function() {
-        Ext.widget('mainview');
+    getStoredItem: function (name) {
+        return this.syncStoresData[name];
+    },
+
+    setStoredItem: function (name, value) {
+        return this.syncStoresData[name] = value;
+    },
+
+    createMainWindow: function () {
+        this.mainview = Ext.widget('mainview');
+        this.startPoll();
+    },
+
+    destroyMainWindow: function () {
+        this.stopPoll();
+        this.mainview.destroy();
+    },
+
+    startPoll: function () {
+        this.poller.delay(0);
+    },
+
+    stopPoll: function () {
+        this.poller.cancel();
+    },
+
+    syncStores: function (records, operation, success) {
+        var utils = PowerMon.util.Utilities;
+        records.map(function (record) {
+            var storeName = utils.ucFirst(record.get('table'));
+            var revision = record.get('revision');
+
+            if (this.getStoredItem(storeName) !== revision) {
+                Ext.getStore(storeName).load();
+                this.setStoredItem(storeName, revision);
+            }
+        }, this);
+
+    },
+
+    updateStats: function () {
+        var tablesRevisionsStore = Ext.getStore('TablesRevisions');
+        tablesRevisionsStore.read({callback: this.syncStores, scope: this});
+
+        this.poller.delay(this.POLL_INTERVAL);
     }
 });
 

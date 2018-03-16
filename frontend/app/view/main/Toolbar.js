@@ -78,12 +78,5 @@ Ext.define("PowerMon.view.main.Toolbar", {
         Ext.apply(this, {items: items});
 
         this.callParent(arguments);
-    },
-    listeners: {
-        afteruserload: {
-            fn: function () {
-                alert(111);
-            }
-        }
     }
 })
