@@ -20,6 +20,7 @@ class CreateEmailSwitchTable extends Migration
             $table->unsignedInteger('email_id')->index();
             $table->foreign('email_id')->references('id')->on('emails')->onDelete('cascade');
 
+            $table->unique(['switch_id', 'email_id']);
             //$table->timestampsTz();
         });
     }

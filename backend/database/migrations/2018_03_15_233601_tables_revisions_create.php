@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class TablesRevisionCreate extends Migration
+class TablesRevisionsCreate extends Migration
 {
     /**
      * Run the migrations.
@@ -27,6 +27,6 @@ class TablesRevisionCreate extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tables_revision');
+        Schema::dropIfExists('tables_revisions');
     }
 }
