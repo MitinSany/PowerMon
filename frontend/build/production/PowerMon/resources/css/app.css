@@ -12,6 +12,10 @@
     zoom: 1;
 }
 
+.icon-cell {
+    padding-left:16px;
+}
+
 .btn_switch {
     background-image: url(../images/app/preferences-desktop-icons-22.png)
 }
@@ -27,16 +31,16 @@
 .btn_about {
     background-image: url(../images/app/help-about-22.png)
 }
-.add_sw {
+.btn_add {
     background-image: url(../images/app/add.png)
 }
-.del_sw {
+.btn_delete {
     background-image: url(../images/app/delete.png)
 }
-.edit_sw {
+.btn_edit {
     background-image: url(../images/app/story-editor.png)
 }
-.refresh {
+.btn_refresh {
     background-image: url(../images/app/arrow_refresh.png)
 }
 .statistics {
@@ -44,18 +48,23 @@
     height: 16px;
     width: 16px;
 }
-.buble_green {
+.bubble_green {
     background-image: url(../images/app/buble_green.png);
     height: 16px;
     width: 16px;
 }
-.buble_red_u {
+.bubble_red_u {
     background-image: url(../images/app/buble_red_u.png);
     height: 16px;
     width: 16px;
 }
-.buble_gray_n {
+.bubble_gray_n {
     background-image: url(../images/app/buble_gray_n.png);
+    height: 16px;
+    width: 16px;
+}
+.changelog {
+    background-image: url(../images/app/text-x-changelog16.png);
     height: 16px;
     width: 16px;
 }

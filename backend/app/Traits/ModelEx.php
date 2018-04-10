@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Exceptions\Exception;
+
 trait ModelEx
 {
     public function toManySync(string $field, array $data)
@@ -16,18 +18,20 @@ trait ModelEx
                 $existIds[] = (int)$item['id'];
             } elseif (array_key_exists($field, $item)) {
                 $itemClass = '\\' . get_class($this->$fieldName()->getRelated());
-                $newItem = new $itemClass;
+                $existsItem = $itemClass::where($field, (string)$item[$field])->first();
 
-                $newItem->$field = (string)$item[$field];
-                $newItem->save();
+                if(!$existsItem) {
+                    $existsItem = new $itemClass;
+                    $existsItem->$field = (string)$item[$field];
+                    $existsItem->save();
+                }
 
-                $this->$fieldName()->attach($newItem->id);
-                $existIds[] = $newItem->id;
+                $this->$fieldName()->attach($existsItem->id);
+                $existIds[] = $existsItem->id;
             } else {
-                //unknown item
+                throw new Exception('Unknown item');
             }
-            $this->$fieldName()->sync($existIds);
         }
-
+        $this->$fieldName()->sync($existIds);
     }
 }

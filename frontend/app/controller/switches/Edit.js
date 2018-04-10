@@ -18,6 +18,11 @@ Ext.define('PowerMon.controller.switches.Edit', {
                     editformreset: this.editFormReset,
                     loadrecord: this.loadRecord
                 }
+            },
+            component: {
+                '*': {
+                    loadrecord: this.loadRecord
+                }
             }
         });
 
@@ -204,14 +209,16 @@ Ext.define('PowerMon.controller.switches.Edit', {
     },
 
     getRecordArrayForm: function (recordRaw, needKey) {
-        var result = [];
+        var result = []; var existsIds = []; var existsValues = [];
         for (var key in recordRaw) {
             var value = recordRaw[key];
-            if (value !== '' && key.indexOf(needKey) === 0) {
+            if (value !== '' && key.indexOf(needKey) === 0 && !existsIds.includes(key) && !existsValues.includes(value)) {
                 var resultKey = typeof value === 'string' ? needKey : 'id';
                 var item = {};
                 item[resultKey] = value;
                 result.push(item);
+                existsIds.push(key);
+                existsValues.push(value);
             }
         }
         return result;
@@ -231,8 +238,9 @@ Ext.define('PowerMon.controller.switches.Edit', {
         var storeName = PowerMon.util.Utilities.ucFirst(name + 's');
         var store = Ext.getStore(storeName);
         for (var i = 0; i < 4; i++) {
-            var formField = 'email' + i;
-            if (store.find(name, formData[formField]) < 0) {
+            var formField = name + i;
+            var fieldValue = formData[formField];
+            if (PowerMon.util.Utilities.trim(fieldValue) != '' && typeof store.getAt(fieldValue) === 'undefined') {
                 if (store.find(name, formField) < 0) {
                     var record = Ext.create(store.model.modelName);
                     record.set(name, formData[formField]);
@@ -248,10 +256,9 @@ Ext.define('PowerMon.controller.switches.Edit', {
         var record = editForm.getRecord();
         var formData = editForm.getValues();
 
-        this.addIfMissing(formData, 'email');
+        record.set('emails', this.getRecordArrayForm(formData, 'email'));
+        record.set('phones', this.getRecordArrayForm(formData, 'phone'));
 
-        formData.emails = this.getRecordArrayForm(formData, 'email');
-        formData.phones = this.getRecordArrayForm(formData, 'phone');
         for (var key in formData) {
             if (record.fields.map[key] !== undefined) {
                 record.set(key, formData[key]);
@@ -261,13 +268,18 @@ Ext.define('PowerMon.controller.switches.Edit', {
         var store = Ext.getStore('Switches');
         if (record.stores.length === 0) {
             store.add(record);
+            //this.fireEvent('selectrecord', record);
         }
         store.sync({
+            success: function () {
+                this.fireEvent('syncstores');
+            },
             failure: function (batch, op) {
                 // TODO: handle error message
                 var errorInfo = batch.exceptions[0].getError();
                 Ext.Msg.alert('Error', errorInfo['status'] + ' ' + errorInfo['statusText']);
-            }
+            },
+            scope: this
         });
     }
 });

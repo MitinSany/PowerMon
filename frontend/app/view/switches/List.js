@@ -5,47 +5,40 @@ Ext.define('PowerMon.view.switches.List', {
     store: 'Switches',
     border: false,
     loadMask: false,
-    itemId: 'grid1',
-    id: 'swlist',
+    itemId: 'switchesList',
+    //id: 'swlist',
     viewConfig: {
         loadMask: false
     },
     tbar: [{
         text: 'Добавить',
-        itemId: 'add_sw',
-        iconCls: 'add_sw',
+        itemId: 'addSwitch',
+        iconCls: 'btn_add',
         disabled: false
     }, {
         text: 'Удалить',
-        itemId: 'del_sw',
-        iconCls: 'del_sw',
+        itemId: 'deleteSwitch',
+        iconCls: 'btn_delete',
         disabled: true
     }, {
         text: 'Редактировать',
-        itemId: 'edit_sw',
-        iconCls: 'edit_sw',
+        itemId: 'editSwitch',
+        iconCls: 'btn_edit',
         disabled: true
     }, {
         text: 'Обновить',
-        itemId: 'refresh',
-        iconCls: 'refresh'
+        itemId: 'refreshSwitch',
+        iconCls: 'btn_refresh'
     }],
     columns: [{
         header: 'SNMP',
-        dataIndex: 'snmp_status',
+        dataIndex: 'status_snmp',
         align: 'center',
         draggable: false,
         menuDisabled: true,
         width: 50,
-        renderer: function (value) {
-            if (value == '1') {
-                return '<div class="buble_green"></div>';
-            } else if (value == '2') {
-                return '<div class="buble_red_u"></div>';
-            } else if (value == '4') {
-                return '';
-            }
-            return '<div class="buble_gray_n"></div>';
+        renderer: function (value, metaData, record, row, col, store, gridView) {
+            return this.snmpStatusColumnRenderer(value, metaData, record, row, col, store, gridView);
         }
     },
         /*
@@ -55,18 +48,15 @@ Ext.define('PowerMon.view.switches.List', {
          */
         {
             header: 'PING',
-            dataIndex: 'ping',
+            dataIndex: 'status_ping',
             align: 'left',
             draggable: false,
             menuDisabled: true,
             width: 70,
-            renderer: function (value) {
-                if (value > 0) {
-                    return '<div class="buble_green"></div> ' + value + ' ms.';
-                } else {
-                    return '<div class="buble_gray_n"></div>';
-                }
+            renderer: function (value, metaData, record, row, col, store, gridView) {
+                return this.pingColumnRenderer(value, metaData, record, row, col, store, gridView);
             }
+
         },
         {
             header: 'Техплощадка',
@@ -89,8 +79,8 @@ Ext.define('PowerMon.view.switches.List', {
             draggable: false,
             menuDisabled: true,
             width: 40,
-            renderer: function (value) {
-                return value > 0 ? value : '';
+            renderer: function (value, metaData, record, row, col, store, gridView) {
+                return this.portColumnRenderer(value, metaData, record, row, col, store, gridView);
             }
         },
         {
@@ -117,15 +107,10 @@ Ext.define('PowerMon.view.switches.List', {
             draggable: false,
             menuDisabled: true,
             items: [{
-                icon: 'resources/images/app/text-x-changelog16.png',
+                iconCls: 'changelog',
                 tooltip: 'Журнал',
-                handler: function (grid, rowIndex, colIndex) {
-                    var id = grid.store.getAt(rowIndex).get('id');
-                    grid.up('mainview').down('#swid').setValue(id);
-                    grid.up('mainview').down('toolbar').down('#log').toggle();
-                    grid.up('mainview').down('#maincard').getLayout()
-                        .setActiveItem(2);
-
+                handler: function(view, rowIndex, colIndex, item, e, record, row) {
+                    this.fireEvent('actionLog', view, rowIndex, colIndex, item, e, record, row);
                 }
             }]
         },
@@ -137,39 +122,44 @@ Ext.define('PowerMon.view.switches.List', {
             draggable: false,
             menuDisabled: true,
             width: 40,
-            renderer: function (value) {
-                if (value != '') {
-                    return '<a href="' +
-                        value +
-                        '" target="_blank"><div class=".statistics"></div></a>';
-                }
+            renderer: function (value, metaData, record, row, col, store, gridView) {
+                return this.urlColumnRenderer(value, metaData, record, row, col, store, gridView);
             }
         }
     ],
 
-    initComponent: function () {
-        this.callParent(arguments);
-        this.getStore().on('beforeload', this.rememberSelection, this);
-        this.getView().on('refresh', this.refreshSelection, this);
+    snmpStatusColumnRenderer: function (value, metaData, record, row, col, store, gridView) {
+
+        switch (value)
+        {
+            case 1 :
+                return '<div class="bubble_green"></div>';
+            case 2 :
+                return '<div class="bubble_red_u"></div>'
+            case 4 :
+                return '';
+            default:
+                return '<div class="bubble_gray_n"></div>';
+        }
     },
 
-    rememberSelection: function (selModel, selectedRecords) {
-        if (!this.rendered || Ext.isEmpty(this.el)) {
-            return;
+    pingColumnRenderer: function (value, metaData, record, row, col, store, gridView) {
+        if (value > 0) {
+            return '<div class="bubble_green icon-cell">&nbsp;' + value + ' ms.</div>';
+        } else {
+            return '<div class="bubble_red_u icon-cell"></div>';
         }
-        var selected = this.getSelectionModel().getSelection();
-        if (selected.length > 0) {
-            this.selectedId = selected[0].getId();
-        }
-        this.getView().saveScrollState();
     },
 
-    refreshSelection: function () {
-        if (this.selectedId !== undefined) {
-            record = this.getStore().getById(this.selectedId);
-            this.getSelectionModel().select(record);
-        }
+    portColumnRenderer: function (value, metaData, record, row, col, store, gridView) {
+        return value > 0 ? value : '';
+    },
 
-        this.getView().restoreScrollState();
+   urlColumnRenderer: function (value, metaData, record, row, col, store, gridView) {
+       if (value != '') {
+           return '<a href="' +
+               value +
+               '" target="_blank"><div class="statistics"></div></a>';
+       };
     }
 });
