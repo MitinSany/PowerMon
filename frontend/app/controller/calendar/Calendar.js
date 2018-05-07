@@ -1,7 +1,7 @@
 Ext.define('PowerMon.controller.calendar.Calendar', {
     extend: 'Ext.app.Controller',
     stores: ['Calendar'],
-    views: ['calendar.Calendar'],
+    views: ['calendar.View', 'calendar.List', 'calendar.Edit'],
 
     init: function (appllication) {
         if (this.inited) {

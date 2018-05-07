@@ -48,5 +48,9 @@ $router->group(['prefix' => 'stores'], function () use ($router) {
     $router->group(['prefix' => 'tables_revisions'], function () use ($router) {
         $router->get('all', ['uses' => 'TablesRevisionsController@all']);
     });
+
+    $router->group(['prefix' => 'calendar'], function () use ($router) {
+        $router->get('all', ['uses' => 'CalendarController@all']);
+    });
 });
 

@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-alpine
+FROM php:fpm-alpine3.7
 WORKDIR /application
 
 ENV XDEBUGINI_PATH=/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini

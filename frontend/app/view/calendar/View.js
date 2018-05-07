@@ -1,6 +1,6 @@
-Ext.define('PowerMon.view.switches.View', {
+Ext.define('PowerMon.view.calendar.View', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.swpanel',
+    alias: 'widget.calendar.view',
     layout: 'border',
     bodyStyle: 'padding: 2px;',
     border: false,
@@ -8,21 +8,21 @@ Ext.define('PowerMon.view.switches.View', {
         {
             region: 'center',
             layout: 'fit',
-            title: 'Свитчи',
+            title: 'Календарь',
             border: true,
             split: true,
             collapsible: false,
             flex: 4,
-            xtype: 'swlist'
+            xtype: 'calendar.list'
         }, {
             region: 'east',
-            title: 'Данные',
+            title: 'Список дежурных номеров',
             width: 260,
             split: true,
             collapsible: false,
             collapsed: false,
             flex: 2,
-            xtype: 'swlistedit'
+            xtype: 'calendar.edit'
 
         }
     ]

@@ -27,7 +27,7 @@ Ext.define('PowerMon.view.main.View', {
             xtype: 'swpanel'
         }, {
             id: 'card-calendar',
-            xtype: 'calendar'
+            xtype: 'calendar.view'
         }, {
             id: 'card-log',
             xtype: 'log'

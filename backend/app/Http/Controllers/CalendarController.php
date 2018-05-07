@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DevSwitch;
+use App\Models\CalendarDay;
 use App\Models\Email;
 use App\Models\Phone;
-use Laravel\Lumen\Exceptions\BadMethodCallException;
+use \BadMethodCallException;
 use Illuminate\Http\Request;
 use \Exception;
 use Illuminate\Support\Facades\Auth;
 
-class SwitchController extends Controller
+class CalendarController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -22,34 +22,54 @@ class SwitchController extends Controller
         $this->middleware('auth');
     }
 
-    public static function loadNestedData(DevSwitch $record)
+    public static function loadNestedData(CalendarDay $record)
     {
         $result = $record->toArray();
-        $result['emails'] = $record->emails()->get()->toArray();
         $result['phones'] = $record->phones()->get()->toArray();
         return $result;
     }
 
     public function all(Request $request)
     {
+        $day = new \DateInterval('P1D');
+        $startDate = new \DateTime('now - ' . CalendarDay::DAYS_BEFORE . 'days');
+
         /**
-         * @var $record DevSwitch
-         * @var $email Email
+         * @var $record CalendarDay
          * @var $phone Phone
          */
-        $records = DevSwitch::all()->map([$this, 'loadNestedData']);
+
+        $records = CalendarDay::where('date', '>=', $startDate)->get()->map([$this, 'loadNestedData']);
+
+
+        $dates = $records->map(function ($item) {
+            return $item['date'];
+        });
+
+        for ($i = 0; $i < CalendarDay::TOTAL_DAYS; $i++) {
+            $startDate->add($day);
+            $date = $startDate->format('Y-m-d');
+
+            if (!$dates->contains($date)) {
+                $calendarDay = new CalendarDay();
+                $calendarDay->date = $date;
+                $calendarDay->save();
+                $records[] = $this->loadNestedData($calendarDay);
+            }
+
+        }
 
         return response()->json(['success' => true, 'data' => $records, 'total' => count($records)]);
     }
 
     public function read(int $id)
     {
-        $switch = DevSwitch::findOrFail($id);
+        $switch = CalendarDay::findOrFail($id);
         $records[] = self::loadNestedData($switch);
         return response()->json(['success' => true, 'data' => $records, 'total' => count($records)]);
     }
 
-    protected function createUpdate(DevSwitch $switch, array $data)
+    protected function createUpdate(CalendarDay $switch, array $data)
     {
         /*try {
 
@@ -69,9 +89,9 @@ class SwitchController extends Controller
         }
         $data = $input['data'];
         /**
-         * @var $switch DevSwitch
+         * @var $switch CalendarDay
          */
-        $switch = new DevSwitch();
+        $switch = new CalendarDay();
         return $this->createUpdate($switch, $data);
     }
 
@@ -83,9 +103,9 @@ class SwitchController extends Controller
         }
         $data = $input['data'];
         /**
-         * @var $switch DevSwitch
+         * @var $switch CalendarDay
          */
-        $switch = DevSwitch::findOrFail($data['id']);
+        $switch = CalendarDay::findOrFail($data['id']);
         return $this->createUpdate($switch, $data);
     }
 
@@ -97,9 +117,9 @@ class SwitchController extends Controller
         }
         $data = $input['data'];
         /**
-         * @var $switch DevSwitch
+         * @var $switch CalendarDay
          */
-        $deleteCount = DevSwitch::destroy($data['id']);
+        $deleteCount = CalendarDay::destroy($data['id']);
         return response()->json(['success' => $deleteCount > 0]);
     }
 }

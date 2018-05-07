@@ -38,7 +38,7 @@ Ext.define('PowerMon.view.calendar.Calendar', {
         }, {
             text: 'Обновить',
             itemId: 'refresh',
-            iconCls: 'refresh'
+            iconCls: 'btn_refresh'
         }],
         columns: [{
             header: 'Дата',
@@ -57,23 +57,8 @@ Ext.define('PowerMon.view.calendar.Calendar', {
             menuDisabled: true,
             align: 'center',
             width: 40,
-            renderer: function (value) {
-                if (value == 'Mon') {
-                    return 'Пн';
-                } else if (value == 'Tue') {
-                    return 'Вт';
-                } else if (value == 'Wed') {
-                    return 'Ср';
-                } else if (value == 'Thu') {
-                    return 'Чт';
-                } else if (value == 'Fri') {
-                    return 'Пт';
-                } else if (value == 'Sat') {
-                    return '<font color="red">Сб</font>';
-                } else if (value == 'Sun') {
-                    return '<font color="red">Вс</font>';
-                }
-
+            renderer: function (value, metaData, record, row, col, store, gridView) {
+                return this.dayColumnRenderer(value, metaData, record, row, col, store, gridView);
             }
         }, {
             header: 'Номер 1',
@@ -174,7 +159,41 @@ Ext.define('PowerMon.view.calendar.Calendar', {
             }
         }]
     }],
-    initComponent: function () {
-        this.callParent(arguments);
+
+    dofwColumnRenderer: function (value, metaData, record, row, col, store, gridView) {
+        var val = '';
+        switch (value) {
+            case 'Mon':
+                val = 'Пн';
+                break;
+
+            case 'Tue':
+                val = 'Вт';
+                break;
+
+            case 'Wed':
+                val = 'Ср';
+                break;
+
+            case 'Thu':
+                val = 'Чт';
+                break;
+
+            case 'Fri':
+                val = 'Пт';
+                break;
+
+            case 'Sat':
+                val = 'Сб';
+                metaData.style = 'color: red;';
+                break;
+
+            case 'Sun':
+                val = 'Вс';
+                metaData.style = 'color: red;';
+                break;
+        }
+        return val;
     }
+
 });
